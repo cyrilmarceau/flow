@@ -28,6 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0']
 
+API_VERSION = os.environ.get("API_VERSION", "")
+API_PREFIX = os.environ.get("API_PREFIX", "")
+
 
 # Application definition
 
@@ -41,7 +44,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
-    'core'
+    'core',
+    'auth_user',
 ]
 
 MIDDLEWARE = [
