@@ -1,0 +1,13 @@
+{
+    "name": "flow",
+    "version": "1.0.0",
+    "description": "Docker shortcut commands",
+    "main": "index.js",
+    "scripts": {
+        "dc:recreate": "sudo docker-compose -f docker-compose.dev.yml -f docker-compose.yml up -d --force-recreate",
+        "dc:bash": "sudo docker-compose -f docker-compose.dev.yml -f docker-compose.yml exec api bash",
+        "dc:restart": "sudo docker-compose -f docker-compose.dev.yml -f docker-compose.yml restart api"
+    },
+    "author": "emendo",
+    "license": "ISC"
+}
