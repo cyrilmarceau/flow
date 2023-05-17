@@ -19,5 +19,10 @@ services:
         volumes:
             # Copy changes made to the project to your image in real-time.
             - ./api:/code
+            - flow_media:/code/media
         # Handles the command used to run the project in the Docker container.
         command: sh -c "python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+    # Creates a volume for the database.
+    flow_media:
