@@ -4,7 +4,8 @@
     "description": "Docker shortcut commands",
     "main": "index.js",
     "scripts": {
-        "dc:build": "sudo docker-compose -f docker-compose.dev.yml -f docker-compose.yml up -d api",
+        "dc:build": "sudo docker-compose -f docker-compose.dev.yml -f docker-compose.yml build api",
+        "dc:log": "sudo docker-compose -f docker-compose.dev.yml -f docker-compose.yml logs -f api",
         "dc:rm": "sudo docker-compose -f docker-compose.dev.yml -f docker-compose.yml stop api && sudo docker-compose -f docker-compose.dev.yml -f docker-compose.yml rm -f api",
         "dc:recreate": "sudo docker-compose -f docker-compose.dev.yml -f docker-compose.yml up -d --force-recreate",
         "dc:bash": "sudo docker-compose -f docker-compose.dev.yml -f docker-compose.yml exec api bash",

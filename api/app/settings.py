@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'versatileimagefield',
+    'drf_spectacular',
 
     'core',
     'auth_user',
@@ -171,3 +172,15 @@ MEDIA_URL = '/flow_media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.User'
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Flow API',
+    'DESCRIPTION': 'API for manage Flow application',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
+
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}

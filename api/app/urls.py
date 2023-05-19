@@ -17,9 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+
+
 from app.settings import API_PREFIX, API_VERSION
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(API_PREFIX + API_VERSION, include('core.urls')),
+
 ]
