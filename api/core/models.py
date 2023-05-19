@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
+from versatileimagefield.fields import VersatileImageField
+
 
 class UserManager(BaseUserManager):
     """Custom user manager class"""
@@ -34,6 +36,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=10, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+    avatar = VersatileImageField(
+        'Avatar',
+        upload_to='avatar',
+        blank=True,
+        null=True,
+    )
 
     USERNAME_FIELD = 'email'
 

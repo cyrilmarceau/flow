@@ -6,3 +6,7 @@ djangorestframework==3.14.0
 mysqlclient==2.1.1
 
 mock==5.0.2
+
+# Image
+pillow==9.5.0
+django-versatileimagefield==3.0
