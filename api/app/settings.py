@@ -17,6 +17,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+UPLOAD_FILE_SIZE_LIMIT = {
+    'avatar': 1024 * 1024 * 3,
+}
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -142,6 +146,10 @@ LOGGING = {
         'core': {
             'handlers': ['console'],
             'level': 'DEBUG',
+        },
+        'auth_user': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
         }
     },
 }
@@ -150,7 +158,7 @@ LOGGING = {
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
 TIME_ZONE = 'UTC'
 

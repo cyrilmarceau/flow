@@ -2,11 +2,16 @@
 Serializers for the auth_user app.
 """
 import logging
+import os
+import uuid
+
 from django.contrib.auth import get_user_model
-from django.contrib.auth.password_validation import validate_password
+
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+
+from app.settings import UPLOAD_FILE_SIZE_LIMIT
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('id', 'username', 'email', 'password', 'phone', 'password_confirm')
+        fields = ('id', 'username', 'email', 'password', 'phone', 'avatar', 'password_confirm')
         extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
 
     def validate(self, attrs):
@@ -35,6 +40,22 @@ class UserSerializer(serializers.ModelSerializer):
             raise ValidationError("Les deux mots de passe ne correspondent pas.")
 
         return super().validate(attrs)
+
+    def validate_avatar(self, avatar):
+        """
+        Validate the avatar.
+        """
+
+        if avatar and avatar.size > UPLOAD_FILE_SIZE_LIMIT.get('avatar', 1024 * 1024 * 3):
+            raise ValidationError("L'avatar ne doit pas dépasser 3 Mo.")
+
+        extension_file = os.path.splitext(avatar.name)[1]
+
+        logger.debug(f"Avatar: {extension_file}")
+
+        avatar.name = f"{uuid.uuid4()}{os.path.splitext(avatar.name)[1]}"
+
+        return avatar
 
     def create(self, validated_data):
         """
