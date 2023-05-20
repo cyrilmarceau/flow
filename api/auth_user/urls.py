@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 
 
+app_name = 'auth_user'
+
 urlpatterns = [
-    path('', views.index, name="index"),
+    path('create/', views.CreateUserView.as_view(), name="create"),
 ]
