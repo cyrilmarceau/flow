@@ -3,7 +3,7 @@ import uuid
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
-
+from core.models.file import File
 from io import BytesIO
 
 
@@ -26,7 +26,6 @@ class ModelTests(TestCase):
         extra_fields = {
             'username': 'testuser',
             'phone': '0601020304',
-            'avatar': mock_image
         }
 
         user = get_user_model().objects.create_user(
@@ -35,11 +34,20 @@ class ModelTests(TestCase):
             **extra_fields
         )
 
+        file = File.objects.create(
+            name=mock_image.name,
+            file=mock_image,
+            type='avatar',
+        )
+
+        user.file = file
+        user.save()
+
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
         self.assertEqual(user.username, extra_fields['username'])
         self.assertEqual(user.phone, extra_fields['phone'])
-        self.assertEqual(user.avatar.name, 'avatar/' + mock_image.name)
+        self.assertEqual(user.file.name, mock_image.name)
 
     def test_new_user_email_normalized(self):
         """Test the email for a new user is normalized"""
