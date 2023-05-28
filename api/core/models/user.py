@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
-
-from .file import File
+from versatileimagefield.fields import VersatileImageField
 
 
 class UserManager(BaseUserManager):
@@ -36,7 +35,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=10, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-    file = models.ForeignKey(File, on_delete=models.CASCADE, blank=True, null=True)
+    avatar = VersatileImageField(
+        'File',
+        upload_to='file',
+        blank=True,
+        null=True,
+    )
 
     USERNAME_FIELD = 'email'
 

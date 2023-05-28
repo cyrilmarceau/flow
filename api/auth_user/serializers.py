@@ -2,17 +2,14 @@
 Serializers for the auth_user app.
 """
 import logging
-import os
-import uuid
 
 from django.contrib.auth import get_user_model
 
-
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 from app.settings import UPLOAD_FILE_SIZE_LIMIT
-
 logger = logging.getLogger(__name__)
 
 
@@ -22,10 +19,14 @@ class UserSerializer(serializers.ModelSerializer):
     """
 
     password_confirm = serializers.CharField(write_only=True)
+    avatar = VersatileImageFieldSerializer(
+        sizes='avatar',
+        required=False
+    )
 
     class Meta:
         model = get_user_model()
-        fields = ('id', 'username', 'email', 'password', 'phone', 'file', 'password_confirm')
+        fields = ('id', 'username', 'email', 'password', 'phone', 'avatar', 'password_confirm')
         extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
 
     def validate(self, attrs):
@@ -41,21 +42,17 @@ class UserSerializer(serializers.ModelSerializer):
 
         return super().validate(attrs)
 
-    def validate_avatar(self, avatar):
+    def validate_avatar(self, value):
         """
         Validate the avatar.
         """
 
-        if avatar and avatar.size > UPLOAD_FILE_SIZE_LIMIT.get('avatar', 1024 * 1024 * 3):
-            raise ValidationError("L'avatar ne doit pas dépasser 3 Mo.")
+        if value:
+            if value.size > UPLOAD_FILE_SIZE_LIMIT.get('avatar', 1024 * 1024 * 3):
+                raise ValidationError("L'image ne doit pas dépasser 3 Mo.")
+            return value
+        return None
 
-        extension_file = os.path.splitext(avatar.name)[1]
-
-        logger.debug(f"Avatar: {extension_file}")
-
-        avatar.name = f"{uuid.uuid4()}{os.path.splitext(avatar.name)[1]}"
-
-        return avatar
 
     def create(self, validated_data):
         """
@@ -64,4 +61,6 @@ class UserSerializer(serializers.ModelSerializer):
 
         validated_data.pop('password_confirm', None)
 
-        return get_user_model().objects.create_user(**validated_data)
+        user = get_user_model().objects.create_user(**validated_data)
+
+        return user

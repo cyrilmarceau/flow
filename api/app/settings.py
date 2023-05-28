@@ -192,3 +192,9 @@ REST_FRAMEWORK = {
     # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
+    'avatar': [
+        ("default", "crop__250x250"),
+    ]
+}
